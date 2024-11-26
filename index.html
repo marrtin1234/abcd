@@ -1,14 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy Server Demo</title>
+    <title>Počítačové sítě</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: 10%;
+            margin-right: 10%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #advanced-button {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: 10%;
+            margin-right: 10%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(500%);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 10;
+        }
+
+        #iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        #close-iframe {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff4d4d;
+            color: white;
+            opacity: 0.1;
+            transition: opacity 0.3s ease;
+        }
+
+        #close-iframe:hover {
+            opacity: 0.4;
+        }
+
+        #hide-button {
+            position: fixed;
+            bottom: 35%;
+            left: 20%;
+            width: 40px;
+            height: 40px;
+            background-image: url('hide.svg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 15;
+            outline: none;
+            filter: brightness(0.95);
+            /* Sníží jas na 60 % */
+        }
+        #hide-button:hover{
+            filter: brightness(0.8);
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Iframe přes Proxy</h1>
-    <iframe src="proxy.php?url=https://www.ecosia.org" width="100%" height="500px" frameborder="0">
-        Váš prohlížeč nepodporuje iframe.
-    </iframe>
+    <div id="button-container">
+        <!-- Tlačítka pro hry -->
+    </div>
+    <button id="advanced-button">ADVANCED</button>
+
+    <!-- Kontejner pro iframe -->
+    <div id="iframe-container">
+        <button id="close-iframe">Close</button>
+        <iframe id="game-iframe"></iframe>
+    </div>
+
+    <!-- Tlačítko Hide -->
+    <button id="hide-button"></button>
+
+    <script>
+        // Seznam her
+        const games = [
+            { name: "1v1.lol", url: "https://1v1.lol" },
+            { name: "Skribbl.io", url: "https://skribbl.io" },
+            { name: "Gartic.io", url: "https://gartic.io" },
+            { name: "Ev.io", url: "https://ev.io" },
+            { name: "Krunker.io", url: "https://krunker.io" },
+            { name: "Play-CS.com", url: "https://play-cs.com/en/" }
+        ];
+
+        const buttonContainer = document.getElementById("button-container");
+        const iframeContainer = document.getElementById("iframe-container");
+        const iframe = document.getElementById("game-iframe");
+        const closeIframe = document.getElementById("close-iframe");
+        const advancedButton = document.getElementById("advanced-button");
+        const hideButton = document.getElementById("hide-button");
+
+        // Vytvoření tlačítek pro hry
+        games.forEach(game => {
+            const button = document.createElement("button");
+            button.textContent = game.name;
+            button.addEventListener("click", () => openGame(game.url));
+            buttonContainer.appendChild(button);
+        });
+
+        // Funkce pro otevření hry v iframe
+        function openGame(url) {
+            iframe.src = url;
+            iframeContainer.style.display = "block";
+        }
+
+        // Zavření iframe
+        closeIframe.addEventListener("click", () => {
+            iframe.src = "";
+            iframeContainer.style.display = "none";
+        });
+
+        // ADVANCED tlačítko
+        advancedButton.addEventListener("click", () => {
+            const customURL = prompt("Zadejte URL hry nebo stránky:");
+            if (customURL) {
+                openGame(customURL);
+            }
+        });
+
+        // Funkce pro tlačítko "Hide"
+        hideButton.addEventListener("click", () => {
+            window.open("https://theses.cz/id/16unhy/Potaov_st_-_vukov_materl_pro_ky_zkladn_koly.pdf", "_blank"); // Otevře stránku v novém panelu
+            window.close(); // Zavře aktuální stránku
+        });
+    </script>
 </body>
+
 </html>
